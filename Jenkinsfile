@@ -35,6 +35,14 @@ pipeline {
             }
         }
 
+        stage('Check SonarQube Connection') {
+    steps {
+        script {
+            sh 'curl http://localhost:9000'
+        }
+    }
+}
+
         stage('Build') {
             steps {
                 script {
