@@ -1,9 +1,35 @@
 pipeline {
     agent any
+
     tools {
         maven 'Maven'
     }
+
     stages {
+        stage('Clone Repository') {
+            steps {
+                git url: 'https://github.com/Samwong077/SIT753-2024-T1-6.1c.git', branch: 'main'
+            }
+        }
+
+        stage('Prepare Workspace') {
+            steps {
+                script {
+                    sh 'ls -la'
+                }
+            }
+        }
+
+        stage('Verify POM') {
+            steps {
+                script {
+                    if (!fileExists('pom.xml')) {
+                        error 'pom.xml not found in the workspace. Check SCM settings or project structure.'
+                    }
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 script {
@@ -11,6 +37,7 @@ pipeline {
                 }
             }
         }
+
         stage('Unit and Integration Tests') {
             steps {
                 script {
@@ -18,6 +45,7 @@ pipeline {
                 }
             }
         }
+
         stage('Code Analysis') {
             steps {
                 script {
@@ -25,6 +53,7 @@ pipeline {
                 }
             }
         }
+
         stage('Security Scan') {
             steps {
                 script {
@@ -32,6 +61,7 @@ pipeline {
                 }
             }
         }
+
         stage('Deploy to Staging') {
             steps {
                 script {
@@ -39,6 +69,7 @@ pipeline {
                 }
             }
         }
+
         stage('Integration Tests on Staging') {
             steps {
                 script {
@@ -46,6 +77,7 @@ pipeline {
                 }
             }
         }
+
         stage('Deploy to Production') {
             steps {
                 script {
@@ -54,12 +86,13 @@ pipeline {
             }
         }
     }
+
     post {
         always {
             emailext(
-              subject: 'Build ${STATUS}: Job ${JOB_NAME} build ${BUILD_NUMBER}',
-              body: """<p>See detailed results here: <a href='${BUILD_URL}'>${BUILD_NAME}</a></p>""",
-              recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+                subject: "Build ${JOB_STATUS}: Job ${JOB_NAME} Build ${BUILD_NUMBER}",
+                body: """<p>See detailed results here: <a href='${BUILD_URL}'>${BUILD_NAME}</a></p>""",
+                recipientProviders: [[$class: 'DevelopersRecipientProvider']]
             )
         }
     }
