@@ -16,12 +16,11 @@ pipeline {
         }
         stage('Prepare Code Quality Report') {
             steps {
-                sh 'mvn jacoco:report' // Example for Java projects, adjust according to your tech stack
+                sh 'mvn jacoco:report'
             }
         }
         stage('Codacy Analysis') {
             steps {
-                // Upload the reports to Codacy
                 sh 'curl -X POST -L --data-binary @${WORKSPACE}/target/site/jacoco/jacoco.xml ${CODACY_PROJECT_TOKEN} ${CODACY_API_BASE_URL}/commitUuid'
             }
         }
