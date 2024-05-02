@@ -1,14 +1,3 @@
-node {
-  stage('SCM') {
-    checkout scm
-  }
-  stage('SonarQube Analysis') {
-    def mvn = tool 'Default Maven';
-    withSonarQubeEnv() {
-      sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=SIT753_6.1c -Dsonar.projectName='SIT753_6.1c'"
-    }
-  }
-}
 pipeline {
     agent any
 
@@ -18,6 +7,7 @@ pipeline {
 
     environment {
         SONARQUBE_HOST = 'http://localhost:9000'
+        SONARQUBE_AUTH_TOKEN = 'sqp_a7e0632a87ec26bbf0239fd74870d1d9c09c2852'
     }
 
     stages {
@@ -66,7 +56,7 @@ pipeline {
                 script {
                     withSonarQubeEnv('Sam') {
                         echo "Analyzing code with SonarQube at ${env.SONARQUBE_HOST}"
-                        sh 'mvn sonar:sonar -Dsonar.host.url=${SONARQUBE_HOST}'
+                        sh 'mvn sonar:sonar -Dsonar.host.url=${SONARQUBE_HOST} -Dsonar.login=${SONARQUBE_AUTH_TOKEN}'
                     }
                 }
             }
