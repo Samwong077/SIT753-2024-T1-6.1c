@@ -20,7 +20,7 @@ pipeline {
                     -Dsonar.projectKey=SIT753_6.1c \
                     -Dsonar.projectName='SIT753_6.1c' \
                     -Dsonar.host.url=http://localhost:9000 \
-                    -Dsonar.login=your_sonar_token_here
+                    -Dsonar.login=sqp_e5d1bed96275d607b085df6c74a56eecb3a0805a
                     """
                 }
             }
