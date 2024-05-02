@@ -3,7 +3,9 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'gradle build'
+                withEnv(["PATH+GRADLE=${tool 'Gradle'}/bin"]) {
+            sh 'gradle build'
+        }
             }
         }
         stage('Unit and Integration Tests') {
