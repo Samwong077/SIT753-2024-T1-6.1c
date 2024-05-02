@@ -1,3 +1,14 @@
+node {
+  stage('SCM') {
+    checkout scm
+  }
+  stage('SonarQube Analysis') {
+    def mvn = tool 'Default Maven';
+    withSonarQubeEnv() {
+      sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=SIT753_6.1c -Dsonar.projectName='SIT753_6.1c'"
+    }
+  }
+}
 pipeline {
     agent any
 
