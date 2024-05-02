@@ -57,7 +57,7 @@ pipeline {
         stage('Security Scan') {
             steps {
                 script {
-                    sh 'zap-cli quick-scan --self-contained --start-options "-config api.disablekey=true" http://localhost:8083'
+                    sh 'zap-cli quick-scan --self-contained --start-options "-config api.disablekey=true" http://localhost:9000'
                 }
             }
         }
