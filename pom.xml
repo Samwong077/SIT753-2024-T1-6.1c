@@ -18,7 +18,9 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
+<properties>
+    <sonar.host.url>http://localhost:9000/</sonar.host.url>
+</properties>
     <build>
         <plugins>
             <plugin>
