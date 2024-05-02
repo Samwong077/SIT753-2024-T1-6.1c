@@ -4,14 +4,14 @@ pipeline {
         // Use Maven tool configuration; replace 'Maven' with the name you specified in Jenkins' global tool configuration if different
         maven 'Maven'
     }
-    
     stages {
         stage('Build') {
             steps {
-                // Replace Gradle build command with Maven
+                // Execute Maven to clean and package the application
                 sh 'mvn clean package'
             }
         }
+        stage('SonarQube Analysis') {
             steps {
                 script {
                     // Run Maven with SonarQube analysis
@@ -25,45 +25,46 @@ pipeline {
                 }
             }
         }
-    }
         stage('Unit and Integration Tests') {
             steps {
-                // Maven test phase
+                // Execute Maven to run unit and integration tests
                 sh 'mvn test'
             }
         }
         stage('Code Analysis') {
             steps {
-                // Integrating with SonarQube using Maven
+                // Integrating with SonarQube using Maven again, if separate from initial analysis
                 sh 'mvn sonar:sonar'
             }
         }
         stage('Security Scan') {
             steps {
-                // If using a Maven plugin for security scanning
+                // Using Maven plugin for security scanning
                 sh 'mvn dependency-check:check'
             }
         }
         stage('Deploy to Staging') {
             steps {
-                // Deployment step can remain unchanged unless it specifically requires Gradle
+                // Deployment command to staging environment
                 sh 'aws deploy --stage staging'
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                // Assuming integration tests are run through Maven
-                sh 'selenium tests'  // Update or keep depending on your integration test setup
+                // Execute integration tests in the staging environment
+                sh 'selenium tests'  // Ensure this command correctly references your test scripts
             }
         }
         stage('Deploy to Production') {
             steps {
+                // Deployment command to production environment
                 sh 'aws deploy --stage production'
             }
         }
     }
     post {
         always {
+            // Send email notification post-build
             emailext(
                 to: 's224078886@deakin.edu.au',
                 subject: "Stage Completed - ${currentBuild.fullDisplayName}",
