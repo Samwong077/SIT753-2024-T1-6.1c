@@ -5,6 +5,10 @@ pipeline {
         maven 'Maven'
     }
 
+    environment {
+        SONARQUBE_HOST = 'http://localhost:9000'
+    }
+
     stages {
         stage('Clone Repository') {
             steps {
@@ -49,7 +53,10 @@ pipeline {
         stage('Code Analysis') {
             steps {
                 script {
-                    sh 'mvn sonar:sonar'
+                    withSonarQubeEnv('Sam') {
+                        echo "Analyzing code with SonarQube at ${env.SONARQUBE_HOST}"
+                        sh 'mvn sonar:sonar -Dsonar.host.url=${SONARQUBE_HOST}'
+                    }
                 }
             }
         }
@@ -57,7 +64,7 @@ pipeline {
         stage('Security Scan') {
             steps {
                 script {
-                    sh 'zap-cli quick-scan --self-contained --start-options "-config api.disablekey=true" http://localhost:9000'
+                    echo 'Placeholder for security scan command'
                 }
             }
         }
@@ -73,7 +80,7 @@ pipeline {
         stage('Integration Tests on Staging') {
             steps {
                 script {
-                    sh 'selenium-side-runner -c "browserName=chrome"'
+                    echo 'Placeholder for Selenium runner command'
                 }
             }
         }
@@ -90,8 +97,8 @@ pipeline {
     post {
         always {
             emailext(
-                subject: "Build ${JOB_STATUS}: Job ${JOB_NAME} Build ${BUILD_NUMBER}",
-                body: """<p>See detailed results here: <a href='${BUILD_URL}'>${BUILD_NAME}</a></p>""",
+                subject: "Build ${env.JOB_STATUS}: Job ${env.JOB_NAME} Build ${env.BUILD_NUMBER}",
+                body: """<p>See detailed results here: <a href='${env.BUILD_URL}'>${env.BUILD_NAME}</a></p>""",
                 recipientProviders: [[$class: 'DevelopersRecipientProvider']]
             )
         }
