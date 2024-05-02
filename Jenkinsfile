@@ -4,6 +4,7 @@ pipeline {
         // Use Maven tool configuration; replace 'Maven' with the name you specified in Jenkins' global tool configuration if different
         maven 'Maven'
     }
+    
     stages {
         stage('Build') {
             steps {
@@ -11,6 +12,20 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
+            steps {
+                script {
+                    // Run Maven with SonarQube analysis
+                    sh """
+                    mvn clean verify sonar:sonar \
+                    -Dsonar.projectKey=SIT753_6.1c \
+                    -Dsonar.projectName='SIT753_6.1c' \
+                    -Dsonar.host.url=http://localhost:9000 \
+                    -Dsonar.login=your_sonar_token_here
+                    """
+                }
+            }
+        }
+    }
         stage('Unit and Integration Tests') {
             steps {
                 // Maven test phase
