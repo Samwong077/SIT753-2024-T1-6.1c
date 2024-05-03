@@ -4,9 +4,17 @@ pipeline {
         maven 'Maven' // Ensure this label matches your Maven installation in Jenkins
     }
     environment {
-        PATH = "${env.PATH}:/usr/local/bin/aws" // Corrected path for AWS CLI
+        PATH = "${env.PATH}:/usr/local/bin" // Assuming AWS CLI is installed in /usr/local/bin
     }
     stages {
+        stage('Verify Tools') {
+            steps {
+                echo 'Verifying Maven...'
+                sh 'mvn --version'
+                echo 'Verifying AWS CLI...'
+                sh 'aws --version'
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Starting Build Stage...'
