@@ -9,22 +9,22 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                bat 'mvn clean package'
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                sh 'mvn test'
+                bat 'mvn test'
             }
         }
         stage('Prepare Code Quality Report') {
             steps {
-                sh 'mvn jacoco:report'
+                bat 'mvn jacoco:report'
             }
         }
         stage('Codacy Analysis') {
             steps {
-                sh """
+                bat """
                 curl -X POST \\
                 --data-binary @\${WORKSPACE}/target/site/jacoco/jacoco.xml \\
                 -H "Content-Type: application/xml" \\
@@ -35,24 +35,24 @@ pipeline {
         }
         stage('Security Scan') {
             steps {
-                sh 'mvn dependency-check:check'
+                bat 'mvn dependency-check:check'
             }
         }
-         stage('Deploy to Staging') {
+        stage('Deploy to Staging') {
             steps {
-                sh 'echo $PATH'
-                sh 'which aws'
-                sh 'aws deploy --stage staging'
+                bat 'echo %PATH%'
+                bat 'where aws'
+                bat 'aws deploy --stage staging'
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                sh 'selenium tests'
+                bat 'selenium tests'
             }
         }
         stage('Deploy to Production') {
             steps {
-        sh 'aws deploy --stage production'
+                bat 'aws deploy --stage production'
             }
         }
     }
