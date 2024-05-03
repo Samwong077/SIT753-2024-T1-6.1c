@@ -3,6 +3,11 @@ pipeline {
     tools {
         maven 'Maven'
     }
+    environment {
+        AWS_ACCESS_KEY_ID = 'DEAKINTASKS'
+        AWS_SECRET_ACCESS_KEY = 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY'
+        AWS_DEFAULT_REGION = 'aus-vic-deakin'
+    }
     stages {
         stage('Build') {
             steps {
@@ -37,8 +42,13 @@ pipeline {
         }
         stage('Deploy to Staging') {
             steps {
-                bat 'C:\\Program Files\\Amazon\\AWSCLIV2\\aws deploy --stage staging'
+                 sh 'aws deploy --stage staging'
             }
+        }
+        stage('Deploy to Production') {
+            steps {
+                sh 'aws deploy --stage production'
+             }
         }
         stage('Integration Tests on Staging') {
             steps {
