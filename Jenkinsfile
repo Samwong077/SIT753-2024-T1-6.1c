@@ -45,11 +45,6 @@ pipeline {
                  sh 'aws deploy --stage staging'
             }
         }
-        stage('Deploy to Production') {
-            steps {
-        sh 'aws deploy --stage production'
-            }
-        }
         stage('Integration Tests on Staging') {
             steps {
                 sh 'selenium tests'
@@ -57,7 +52,7 @@ pipeline {
         }
         stage('Deploy to Production') {
             steps {
-                bat 'C:\\Program Files\\Amazon\\AWSCLIV2\\aws deploy --stage production'
+        sh 'aws deploy --stage production'
             }
         }
     }
