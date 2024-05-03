@@ -47,8 +47,8 @@ pipeline {
         }
         stage('Deploy to Production') {
             steps {
-                sh 'aws deploy --stage production'
-             }
+        sh 'aws deploy --stage production'
+            }
         }
         stage('Integration Tests on Staging') {
             steps {
