@@ -7,14 +7,6 @@ pipeline {
         PATH = "${env.PATH}:/usr/local/bin" // Assuming AWS CLI is installed in /usr/local/bin
     }
     stages {
-        stage('Verify Tools') {
-            steps {
-                echo 'Verifying Maven...'
-                sh 'mvn --version'
-                echo 'Verifying AWS CLI...'
-                sh 'aws --version'
-            }
-        }
         stage('Build') {
             steps {
                 echo 'Starting Build Stage...'
@@ -55,10 +47,11 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to Staging...'
-                sh 'echo $PATH'
-                sh 'aws deploy --stage staging'
+                sh 'docker build -t myapp:staging .'
+                sh 'docker run -d --name myapp-staging myapp:staging'
             }
         }
+
         stage('Integration Tests on Staging') {
             steps {
                 echo 'Placeholder for integration tests commands'
@@ -67,7 +60,8 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 echo 'Deploying to Production...'
-                sh 'aws deploy --stage production'
+                sh 'docker build -t myapp:latest .'
+                sh 'docker run -d --name myapp-production myapp:latest'
             }
         }
     }
