@@ -24,7 +24,6 @@ pipeline {
             steps {
                 echo 'Generating JaCoCo Report...'
                 sh 'mvn jacoco:report'
-                sh 'ls -lah target/site/jacoco/' // Check the generation of the report
             }
         }
         stage('Codacy Analysis') {
