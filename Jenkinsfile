@@ -63,7 +63,11 @@ pipeline {
     }
     post {
         always {
-            emailext body: 'Pipeline Completed', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Stage Completed'
+            emailext(
+                to: 'wongfuksang@gmail.com',
+                subject: "Stage Completed - ${currentBuild.fullDisplayName}",
+                body: "Pipeline completed."
+            )
         }
     }
 }
