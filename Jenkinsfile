@@ -4,9 +4,7 @@ pipeline {
         maven 'Maven'
     }
     environment {
-        AWS_ACCESS_KEY_ID = 'DEAKINTASKS'
-        AWS_SECRET_ACCESS_KEY = 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY'
-        AWS_DEFAULT_REGION = 'aus-vic-deakin'
+        PATH = "${env.PATH};C:\\Program Files\\Amazon\\AWSCLIV2"
     }
     stages {
         stage('Build') {
@@ -40,9 +38,11 @@ pipeline {
                 sh 'mvn dependency-check:check'
             }
         }
-        stage('Deploy to Staging') {
+         stage('Deploy to Staging') {
             steps {
-                 sh 'aws deploy --stage staging'
+                sh 'echo $PATH'
+                sh 'which aws'
+                sh 'aws deploy --stage staging'
             }
         }
         stage('Integration Tests on Staging') {
