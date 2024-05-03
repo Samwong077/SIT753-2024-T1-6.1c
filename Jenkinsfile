@@ -48,7 +48,6 @@ pipeline {
             steps {
                 echo 'Deploying to Staging...'
                 sh 'echo $PATH'
-                sh 'which aws'
                 sh 'aws deploy --stage staging'
             }
         }
