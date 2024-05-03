@@ -10,6 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'mvn clean package'
+                sh 'ls -lah /var/jenkins_home/workspace/SIT753_6.1c/target/'
             }
         }
         stage('Unit and Integration Tests') {
@@ -20,6 +21,7 @@ pipeline {
         stage('Prepare Code Quality Report') {
             steps {
                 sh 'mvn jacoco:report'
+                sh 'ls -lah /var/jenkins_home/workspace/SIT753_6.1c/target/site/jacoco/'
             }
         }
         stage('Codacy Analysis') {
@@ -41,13 +43,13 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 sh 'echo $PATH'
-                sh 'which aws'
+                sh 'where aws'
                 sh 'aws deploy --stage staging'
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                sh 'echo "Running integration tests on staging environment"'
+                echo 'Placeholder for integration tests commands'
             }
         }
         stage('Deploy to Production') {
