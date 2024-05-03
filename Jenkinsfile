@@ -37,7 +37,7 @@ pipeline {
         }
         stage('Deploy to Staging') {
             steps {
-                sh 'aws deploy --stage staging'
+                bat '"C:\\Program Files\\Amazon\\AWSCLIV2\\aws" deploy --stage staging'
             }
         }
         stage('Integration Tests on Staging') {
