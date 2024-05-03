@@ -47,8 +47,6 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to Staging...'
-                sh 'docker build -t myapp:staging .'
-                sh 'docker run -d --name myapp-staging myapp:staging'
             }
         }
 
@@ -60,8 +58,6 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 echo 'Deploying to Production...'
-                sh 'docker build -t myapp:latest .'
-                sh 'docker run -d --name myapp-production myapp:latest'
             }
         }
     }
