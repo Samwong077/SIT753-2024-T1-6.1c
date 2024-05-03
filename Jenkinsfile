@@ -1,10 +1,10 @@
 pipeline {
     agent any
     tools {
-        maven 'Maven' // Ensure this label matches your Maven installation in Jenkins
+        maven 'Maven'
     }
     environment {
-        PATH = "${env.PATH}:/usr/local/bin" // Assuming AWS CLI is installed in /usr/local/bin
+        PATH = "${env.PATH}:/usr/local/bin" 
     }
     stages {
         stage('Build') {
