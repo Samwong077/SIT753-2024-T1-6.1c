@@ -62,11 +62,12 @@ pipeline {
         }
     }
     post {
-        always {
-            emailext(
-                to: 'wongfuksang@gmail.com',
-                subject: "Stage Completed - ${currentBuild.fullDisplayName}",
-                body: "Pipeline completed."
+    always {
+        emailext(
+            to: 'wongfuksang@gmail.com',
+            subject: "Stage Completed - ${currentBuild.fullDisplayName}",
+            body: "Pipeline completed.",
+            attachmentsPattern: "**/*.jar"
             )
         }
     }
